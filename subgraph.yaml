@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
 dataSources:
@@ -8,9 +8,10 @@ dataSources:
     source:
       address: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
       abi: Contract
+      startBlock: 15054590
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Interaction
@@ -21,15 +22,7 @@ dataSources:
       abis:
         - name: Contract
           file: ./abis/Contract.json
-      eventHandlers:
-        - event: Interaction(indexed address,uint256,bytes4)
-          handler: handleInteraction
-        - event: OrderInvalidated(indexed address,bytes)
-          handler: handleOrderInvalidated
-        - event: PreSignature(indexed address,bytes,bool)
-          handler: handlePreSignature
-        - event: Settlement(indexed address)
-          handler: handleSettlement
-        - event: Trade(indexed address,address,address,uint256,uint256,uint256,bytes)
-          handler: handleTrade
+      callHandlers:
+        - function: settle(address[],uint256[],(uint256,uint256,address,uint256,uint256,uint32,bytes32,uint256,uint256,uint256,bytes)[],(address,uint256,bytes)[][3])
+          handler: handleSettle
       file: ./src/contract.ts
